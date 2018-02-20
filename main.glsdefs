@@ -1,0 +1,60 @@
+\ifglsentryexists{UML}{}%
+{%
+\gls@defglossaryentry{UML}%
+{%
+name={UML},%
+sort={UML},%
+type={main},%
+first={UML},%
+firstplural={UMLs},%
+text={UML},%
+plural={UMLs},%
+description={Unified Modeling Language},%
+descriptionplural={Unified Modeling Language},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{Cron}{}%
+{%
+\gls@defglossaryentry{Cron}%
+{%
+name={Cron},%
+sort={Cron},%
+type={main},%
+first={Cron},%
+firstplural={Crons},%
+text={Cron},%
+plural={Crons},%
+description={Cron ist ein Programm, das ständig im Hintergrund abläuft und der zeitbasierten Ausführung von Prozessen unter unixartigen Systemen, um wiederkehrende Aufgaben zu automatisieren},%
+descriptionplural={Cron ist ein Programm, das ständig im Hintergrund abläuft und der zeitbasierten Ausführung von Prozessen unter unixartigen Systemen, um wiederkehrende Aufgaben zu automatisieren},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
