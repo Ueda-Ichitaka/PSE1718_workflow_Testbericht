@@ -1,0 +1,185 @@
+\chapter{Fehlerbehebung}
+\section{Einleitung}
+
+In diesem Kapitel werden Fehler aufgelistet, die im Laufe der Qualitätssicherungsphase repariert wurden.\newline
+
+\section{Behobene Fehler}
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Duplizierte Workflows beim ersten Speichern}
+\newline
+
+
+Wenn beim ersten Speichern eines Workflows im oberen Textfeld des Namens ein neuer Name eingetippt und dann auf speichern gedrückt wurde, wurden zwei \gls{Event}s ausgelöst:\newline
+Einmal das \gls{blur}-Event des Textfeldes welches den Workflow, falls er bisher noch nicht gespeichert wurde, als neuen Workflow speichert.
+Dann wurde jedoch auch noch das Event des Speichern-Button ausgelöst welches den Workflow auch als neuen Workflow speichert, falls dieser bisher noch nicht gespeichert wurde.
+Dadurch wurde der selbe Workflow zwei mal in der Datenbank gespeichert und auch zwei mal beim Benutzer auf der Seite der Workflows angezeigt.
+\newline
+
+
+\textbf{Behebung}
+\newline
+
+
+Das blur Event des Textfeldes wurde entfernt, wodurch der Benutzer jetzt zwar nicht mehr die Möglichkeit hat auf eine beliebige Stelle im Editor zu klicken nachdem er den Namen des Workflows bearbeitet hat um diesen zu speichern, aber er kann auf den Speichern-Button klicken, was für Nutzeroberflächen am intuitivsten ist.
+\newline
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Fehler beim Einfügen des WPS Servers}
+\newline
+
+
+WPS Server, bei denen in der GetCapabilities Response die Urls für die GetCapabilities, DesribeProcesses und ExecuteProcess Operationen nicht als die Server Url, sondern als localhost eingetragt sind, konnten nicht richtig hinzugefügt werden. Das lag daran, dass die Funktion, die die GetCapabilities Response parste den Inhalt der folgenden Felder speicherte. Falls in diesem Feld \glqq localhost\grqq{} stand, versuchte der Django Server im Weiteren mit dem lokalen WPS Server zu kommunizieren, was zu den Fehlern führte.
+\newline
+
+
+\textbf{Behebung}
+\newline
+
+
+Die Parsing Methode wurde entsprechend umgestellt. Da die Urls der oben genannten WPS Methoden für jeden Server gleich sind, wurde auf zusätzliches Parsen verzichtet. Nun werden die Urls direkt aus der eingetragenen Url generiert, indem die entsprechende Erweiterung anhängt wird. 
+\newline
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Endes
+%%%%%%%%%%
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Input Kanten gelöscht bei mehreren Inputs eines Tasks}
+\newline
+
+
+Wenn ein Task mehr als einen Input hat und davon bereits mindestens ein Input mit einer Kante verbunden ist und man anschließend einen weiteren Input manuell eingibt, werden alle bereits vorhandenen Input Kanten zu dem Task gelöscht. Dies wurde verursacht durch eine Zeile Code, die ursprünglich den Bug \glqq Input Stacking\grqq{} behebem sollte. Das war jedoch nur in einem Szenario mit maximal einem Input pro Task der Fall, da hier, wenn ein Input manuell zu einem Task hinzugefügt wurde, alle anderen Inputs des Tasks gelöscht wurden. 
+\newline
+
+
+\textbf{Behebung}
+\newline
+
+
+Gelöst wurde das Problem, indem die entsprechende Zeile Code entfernt wurde. Der Bug \glqq Input Stacking\grqq{} war jedoch noch weiterhin vorhanden und wurde separat behoben. 
+\newline
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Input Stacking}
+\newline
+
+
+Hier gab es das Problem, dass beim manuellen Hinzufügen von Inputs, die Inputs über bereits vorhandene Inputs \glqq gestackt\grqq{} wurden, anstatt den vorhandenen Input zu verändern. Verursacht wurde dies durch den clientseitigen \glqq create\grqq -Aufruf von manuell erstellten Input-Artefakten selbst bei Änderungen eines vorhandenen Inputs. 
+\newline
+
+
+\textbf{Behebung}
+\newline
+
+Um den Fehler zu beheben wurde die Verarbeitung von manuellen Inputs angepasst: Es wird nun geprüft, ob ein Input-Artefakt, bzw. eine Input Kante, vorhanden ist und falls ja, wird dieses anschließend verändert, bzw. die entsprechende Input Kante durch den manuellen Input ersetzt. Falls kein Input-Artefakt vorhanden ist, wird wie gehabt ein neues Input-Artefakt erstellt.
+\newline
+
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Fehlendes Favicon}
+\newline
+
+
+Bei der Entwicklung des Clients wurde das passende Favicon zwar angezeigt, jedoch nicht in der Release-Version des Clients.
+\newline
+
+\textbf{Behebung}
+\newline
+
+
+Django verlangt von Bildressourcen, dass sie aus dem Ordner \textit{static} geladen werden. Ein Umleiten der URL zum Favicon hat den Fehler behoben.
+\newline
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%
+
+\newpage
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Aufrufen einer gelöschten Komponente}
+\newline
+
+
+Um die Performance der Applikation zu steigen wurde vor allem im Editor auf eine automatische Change Detection verzichtet. Dies führte dazu, dass in der Übersicht der Workflows bereits gelöschte Editor-Instanzen wieder aufgerufen wurden. 
+\newline
+
+\textbf{Behebung}
+\newline
+
+
+An allen Stellen, bei denen manuelle Change Detection eingesetzt wurde, wird nun überprüft, ob die jeweilige Instanz bereits gelöscht wurde.
+\newline
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%
+
+%%%%%%%%%%
+% Fehler Anfang
+%%%%%%%%%%
+
+\textbf{\large Fehler bei der Workflow-Validierung}
+\newline
+
+
+Der Workflow war nicht ausführbar und gab die Fehlermeldung \glqq Workflow has a cycle\grqq{} aus, obwohl der Workflow keinen Zyklus beinhaltete. Verursacht wurde dieser Fehler in der Validierungsmethode; Diese führte bei der Zyklusüberprüfung zu einem Fehler wenn ein Task mehrere Inputs hatte, von denen mindestens zwei Inputs den gleichen Ursprung hatten. Der Ursprung musste in diesem Fall nicht der direkte Ursprung sein, sondern konnte auch indirekt der gleiche sein. Wenn zwei Kanten zu einem Task mit mehreren Inputs den gleichen Ursprung hatten, markierte der Algorithmus den Workflow fälschlicherweise als Zyklusbehaftet, wodurch der Workflow nicht ausführbar war.
+\newline
+
+
+\textbf{Behebung}
+\newline
+
+
+Behoben wurde dieser Fehler durch eine Anpassung des Algorithmus zur Zyklusüberprüfung für Tasks mit mehr als einem Input.
+\newline
+
+
+\vspace{2em}
+
+%%%%%%%%%%
+% Fehler Ende
+%%%%%%%%%%

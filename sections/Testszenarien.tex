@@ -1,0 +1,33 @@
+\chapter{Testszenarien}
+
+    \section{Einleitung}
+    In diesem Kapitel wird Bezug auf die Testszenarien genommen, welche im Pflichtenheft definiert wurden. Hierbei werden die einzelnen Szenarien erneut aufgelistet und erläutert.
+
+            \section{Normaler Anwendungsverlauf}
+        \begin{itemize}
+            \item Nutzer loggt sich ein. [TF100]:
+            \vspace{1mm}\\Eine Benutzerauthentifikation wurde implementiert und getestet.
+            \item Nutzer erstellt / bearbeitet Workflows. [TF30], TF10], [TF20]:
+            \vspace{1mm}\\Die Erstellung und das Bearbeiten von Workflows wurde implementiert und getestet.
+            \item Nutzer führt Workflow aus. [TF80]:
+            \vspace{1mm}\\Die Ausführung von Worklows auf WPS Servern, welche die entsprechenden WPS Prozesse anbieten, wurde implementiert und getestet. 
+            \item Workflow wird im Hintergrund (Serverseitig) ausgeführt. [TF80]:
+            \vspace{1mm}\\Die Ausführung von Workflows läuft im Hintergrund (Serverseitig). Hierbei schickt unser Server die einzelnen Tasks an einen WPS Server und empfängt nach der Ausführung das Ergebnis.
+            \item Nutzer meldet sich ab. [TF100]:
+            \vspace{1mm}\\Eine Benutzerauthentifikation wurde implementiert und getestet.
+            \item Nutzer meldet sich wieder an um Status des Workflows abzufragen, bzw. Ergebnisse zu betrachten. [TF100], [TF90]:
+            \vspace{1mm}\\Der Status der Workflows können durch drücken des \glqq WORKFLOWS\grqq{} Buttons in der Titelleiste angezeigt werden. 
+        \end{itemize}
+        \section{Anwendungsverlauf mit Verbindungsabbruch}
+        \begin{itemize}
+            \item Nutzer loggt sich ein. [TF100]:
+            \vspace{1mm}\\Eine Benutzerauthentifikation wurde implementiert und getestet.
+            \item Nutzer erstellt / bearbeitet Workflows. [TF30], TF10], [TF20]:
+            \vspace{1mm}\\Die Erstellung und das Bearbeiten von Workflows wurde implementiert und getestet.
+            \item Die Verbindung zum Nutzer bricht ab.
+            \item Unvollständig bearbeiteter Workflow wird gespeichert. [TF70]:
+            \vspace{1mm}\\Das System speichert konstant den Workflow auf dem Server.
+            \item Nutzer meldet sich wieder an, und wird gefragt ob er weiterarbeiten möchte. [TF70]:
+            \vspace{1mm}\vspace{1mm}\\Es wurde implementiert und getestet, dass Nutzer sich wieder anmelden und anschließend auf \glqq WORKFLOWS\grqq{} klicken können, um an ihren Workflows weiter zu arbeiten. 
+            \item Nutzer kann normal weiterarbeiten
+        \end{itemize}
